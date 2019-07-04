@@ -1,4 +1,4 @@
-const appTest = require('../src/routes/version')
+const appTest = require('../routes/version')
 
 const body = {
     'version': process.env.BUILD_VERSION,
