@@ -1,7 +1,9 @@
 FROM node:12.3.1-stretch
 WORKDIR /usr/app/
 ADD src ./src
+ADD tests ./tests
 ADD package.json .
+ADD .eslintrc.yml .
 
 ARG BUILD_DESCRIPTION
 ENV BUILD_DESCRIPTION=${BUILD_DESCRIPTION:-unknown}
