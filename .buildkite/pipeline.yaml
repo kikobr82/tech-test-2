@@ -1,0 +1,12 @@
+steps:
+  - name: ':hammer: Container Build'
+    command: scripts/build.sh
+  - wait
+  - name: ':100: Unit Tests'
+    command: scripts/tests.sh
+  - wait
+  - name: ':hammer: Image Cleanup'
+    command: scripts/cleanup.sh
+  - wait
+  - name: ':rocket: Publish docker image'
+    command: scripts/publish.sh
