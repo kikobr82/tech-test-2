@@ -51,6 +51,12 @@ Once the build is completed, you can run the container with the following comman
 
 After having the container into a run state, you can access the API with a **http://localhost:3000/version** and should receive the API information.
 
+### Running the pipeline locally
+Buildkite provides a cli agent that can be used to run the pipeline locally, as it would be running on the agents. This improve and speed up the pipeline feedback process as well. 
+
+More information on how to use this tool can be found [here](https://github.com/buildkite/cli)
+
+
 ## Running this pipelne on a different CI tool
 This pipeline can be easily migrated to different CI tools but adjustments may be required. CI tools with instances agents can be easily used. Since the stages are using bash scripts, those can be easily leveraged to different CI tools and the only change would be the pipeline stage file to be created based on the new tool.
 
@@ -61,11 +67,13 @@ For containerized CI tools, additional changes will be required, since most of t
 - The Buildkite agent is currently a static server with pre-fixed configurations. Ideally a dynamic cloud based agent should be used and all required credentials should be using a secret manager solution.
 - The container image is currently being generated with the **BUILD_SHA** as the image tag(eg: tech-test-2-prod:34bc48e). This facilitates the end-to-end traceability of the deployment. Version is hard-coded in the **package.json** file, which needs improvement.
 - Integration and security tests are not in place. Because of all stages are decoupled at this moment, additional tests can be easily implemented and can use both the test and the prod container images.
+- At this moment the pipeline runs in a similar way with commits to all branches. Ideally only pushed to master should generate a final image to be used in production. Builds from other branches could be used for integrated tests only.
+- At this moment, the repository is allowing commits to the master branch. Ideally master should only be changed through a PR and only after the build is completed sccessfully from the branch and code reviewed and approved. Additional validations could also be incldued like a sucessfully integration test pipeline run.
 
 ## Possible Changes
 
-- The application tests could be incldued in the build stage of the dockerfile and have the Dockefile reduced to two stages(first one to generate a base image and execute a tests and second stage to clean up and generate the final image). The decision around having a test image before having the final image is around possible tests that would require external components and in that case an image would be required to run some kind of tests within a docker-compose stack.
-- Use a dockerized CI tool like Travis or Drone. The decision to use buildkite and an agent was around my previous experience with the tool and also with the fact that this kind of tool can benefit a lot from the intereaction between stages in the pipeline as well as benefit from previous run of the pipeline execution, specially around container layers reuse, improving the build process when multple commits are done through the day.
+- The application tests could be incldued in the build stage of the dockerfile and have the Dockefile reduced to two stages(first one to generate a base image and execute a tests and second stage to clean up and generate the final image). The decision around having a test image before having the final image is around possible tests that would require external components(integration tests) and in that case an image would be required to run some kind of tests within a docker-compose stack.
+- Use Buildkite as dockerized steps or another similar tool like Travis or Drone. The decision to use buildkite and an agent was around my previous experience with the tool and also with the fact that this kind of tool can benefit a lot from the intereaction between stages in the pipeline as well as benefit from previous run of the pipeline execution, specially around container layers reuse, improving the build process when multple commits are done through the day.
 
 
 
