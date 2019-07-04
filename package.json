@@ -1,0 +1,21 @@
+{
+  "name": "nodeapp",
+  "version": "1.0.0",
+  "description": "Pre-interview tech-test-2",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github:kikobr82/tech-test-2"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Francisco Collet",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
