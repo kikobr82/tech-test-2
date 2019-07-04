@@ -8,10 +8,9 @@ RUN npm install
 
 
 FROM node:12.3.1-alpine AS test
+WORKDIR /usr/app
 ARG BUILD_DESCRIPTION
 ENV BUILD_DESCRIPTION=${BUILD_DESCRIPTION:-unknown}
-
-WORKDIR /usr/app
 
 ARG BUILD_SHA
 ENV BUILD_SHA=${BUILD_SHA:-unknown}
@@ -27,7 +26,6 @@ COPY --from=build /usr/app/node_modules /usr/app/node_modules
 
 
 FROM node:12.3.1-alpine AS cleanup
-
 WORKDIR /usr/app
 
 COPY --from=build /usr/app/src /usr/app/
@@ -37,18 +35,17 @@ RUN npm prune --production
 
 
 FROM node:12.3.1-alpine
+WORKDIR /usr/app
 ARG BUILD_DESCRIPTION
 ENV BUILD_DESCRIPTION=${BUILD_DESCRIPTION:-unknown}
-
-EXPOSE 3000
-
-WORKDIR /usr/app
 
 ARG BUILD_SHA
 ENV BUILD_SHA=${BUILD_SHA:-unknown}
 
 ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION:-unknown}
+
+EXPOSE 3000
 
 COPY --from=build /usr/app/src /usr/app/
 COPY --from=cleanup /usr/app/node_modules /usr/app/node_modules
