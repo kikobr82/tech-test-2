@@ -1,6 +1,6 @@
 #!/bin/bash
 BUILD_SHA=`git rev-parse --short HEAD`
-REPOSITORY=newone
+REPOSITORY=kikobr82
 TAG=tech-test-2-prod
 
 docker tag ${TAG} ${REPOSITORY}/${TAG}:${BUILD_SHA} 
