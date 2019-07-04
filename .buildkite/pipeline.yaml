@@ -1,0 +1,24 @@
+steps:
+  - name: ':hammer: Container Build'
+    command: scripts/build.sh
+    agents:
+      queue: QUEUE
+      aws:instance-id: INSTANCE_ID
+  - wait
+  - name: ':100: Unit Tests'
+    command: scripts/tests.sh
+    agents:
+      queue: QUEUE
+      aws:instance-id: INSTANCE_ID
+  - wait
+  - name: ':hammer: Image Cleanup'
+    command: scripts/cleanup.sh
+    agents:
+      queue: QUEUE
+      aws:instance-id: INSTANCE_ID
+  - wait
+  - name: ':rocket: Publish docker image'
+    command: scripts/publish.sh
+    agents:
+      queue: QUEUE
+      aws:instance-id: INSTANCE_ID
